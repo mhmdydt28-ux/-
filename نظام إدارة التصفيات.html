@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نظام إدارة التصفيات</title>
+<style>
+:root{--bg:#f2f6f3;--cd:#fff;--tx:#12231a;--mu:#68796e;--pr:#16a34a;--bd:#d9e4dc;--dg:#dc2626;--gd:#f59e0b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1510;--cd:#16211a;--tx:#e8f1ec;--mu:#8da094;--bd:#27362c}}
+:root[data-theme="dark"]{--bg:#0d1510;--cd:#16211a;--tx:#e8f1ec;--mu:#8da094;--bd:#27362c}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Tahoma,"Segoe UI",Arial,sans-serif;line-height:1.5;padding-bottom:80px}
+header{background:linear-gradient(135deg,#14803f,#0a2d18);color:#fff;padding:20px 16px 14px}
+header h1{margin:0;font-size:22px}header input{background:transparent;border:0;border-bottom:1px dashed #fff8;color:#fff;font:inherit;font-size:22px;font-weight:700;width:100%}
+.bg{display:inline-block;font-size:12px;background:#fff2;border-radius:99px;padding:2px 10px;margin-top:6px}
+nav{display:flex;gap:6px;padding:10px 12px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+nav button{flex:1;padding:10px 4px;border:1px solid var(--bd);background:var(--cd);color:var(--tx);border-radius:12px;font:inherit;font-size:14px;cursor:pointer}
+nav button.on{background:var(--pr);color:#fff;border-color:var(--pr)}
+main{padding:4px 12px;max-width:1000px;margin:auto}
+.bar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:8px 0 12px;flex-wrap:wrap}
+.btn{border:0;background:var(--pr);color:#fff;padding:10px 16px;border-radius:12px;font:inherit;font-size:14px;cursor:pointer}
+.btn.g{background:var(--cd);color:var(--tx);border:1px solid var(--bd)}.btn.d{background:var(--dg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.tc{background:var(--cd);border:1px solid var(--bd);border-radius:16px;overflow:hidden;cursor:pointer;text-align:center}
+.tc .bn{height:80px;background:#1f9d55;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:700}
+.tc img,.bn img{width:100%;height:100%;object-fit:cover}.tc b{display:block;padding:10px 6px;font-size:15px}
+.tc small{display:block;color:var(--mu);padding:0 6px 8px;font-size:12px}
+.mt{background:var(--cd);border:1px solid var(--bd);border-radius:12px;margin:0 0 10px;overflow:hidden;position:relative}
+.mt small{position:absolute;left:8px;top:6px;font-size:11px;color:var(--mu)}
+.tr{display:flex;align-items:center;gap:8px;padding:8px 10px;font-size:14px}.tr+.tr{border-top:1px solid var(--bd)}
+.tr b{flex:1;font-weight:600}.tr.e{color:var(--mu);justify-content:center}
+.tr.w{background:#16a34a22;color:var(--pr)}.tr.l{opacity:.45}
+[data-act=win]{cursor:pointer}
+.lg{width:30px;height:30px;border-radius:8px;object-fit:cover;background:#1f9d55;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none;overflow:hidden}
+.rounds{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px}.rc{min-width:230px;flex:1}
+.rc h3{margin:0 0 8px;font-size:14px;color:var(--mu);text-align:center}
+.rc .col{display:flex;flex-direction:column;justify-content:space-around;height:calc(100% - 28px)}
+.ch{background:linear-gradient(135deg,#f59e0b,#b45309);color:#fff;border-radius:16px;padding:16px;text-align:center;margin-bottom:14px;font-size:18px;font-weight:700}
+.ps{background:var(--cd);border:1px solid var(--bd);border-radius:16px;overflow:hidden;cursor:pointer}
+.ps img{width:100%;display:block}.ps div{padding:10px;font-size:14px;display:flex;justify-content:space-between;gap:6px}
+.ps span{color:var(--mu);font-size:12px}
+.ov{position:fixed;inset:0;background:#000a;z-index:20;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 12px 24px}
+.md{background:var(--cd);border-radius:18px;padding:16px;width:100%;max-width:480px}
+.md h2{margin:0 0 12px;font-size:18px}.md label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px}
+.md input[type=text],.md textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit}
+.md textarea{min-height:90px}.md .pv{height:110px;border-radius:12px;background:#1f9d55;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#fff;font-size:30px;font-weight:700}
+.md .pv img{width:100%;height:100%;object-fit:cover}.md .row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.md .row .btn{flex:1}
+.md img.big{width:100%;border-radius:12px}.nt{white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:10px;font-size:14px}
+.sv{position:fixed;bottom:0;inset-inline:0;background:var(--cd);border-top:1px solid var(--bd);padding:10px 14px calc(env(safe-area-inset-bottom,0px) + 10px);display:flex;gap:10px;align-items:center;justify-content:space-between;z-index:9}
+.em{text-align:center;color:var(--mu);padding:40px 10px}
+#ts{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#111e;color:#fff;padding:10px 16px;border-radius:99px;font-size:14px;z-index:30}
+</style>
+</head>
+<body>
+<div id="app"></div><div id="md"></div>
+<script id="st" type="application/json">{}</script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let S=Object.assign({name:'بطولة التصفيات',teams:[],rounds:[],posts:[],nid:1},JSON.parse($('#st').textContent||'{}'));
+let tab='teams',owner=false,dirty=false,art=null,dl=null,tmpB,PC=null,PR=0;
+const tm=id=>S.teams.find(t=>t.id===id);
+const FT='Tahoma,Arial,sans-serif';
+function rn(r){const l=S.rounds.length-r;return l==1?'النهائي':l==2?'نصف النهائي':l==3?'ربع النهائي':'دور الـ'+2**l}
+const logo=t=>t.b?`<img class=lg src="${t.b}">`:`<span class=lg>${esc(t.name.trim().slice(0,2))}</span>`;
+function toast(m){const e=document.createElement('div');e.id='ts';e.textContent=m;document.body.append(e);setTimeout(()=>e.remove(),2800)}
+function ch(){dirty=true;render()}
+const rs=(f,w,h,q)=>new Promise(res=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas'),x=c.getContext('2d');let W=i.width,H=i.height;if(h){c.width=w;c.height=h;const k=Math.max(w/W,h/H);x.drawImage(i,(w-W*k)/2,(h-H*k)/2,W*k,H*k)}else{const k=Math.min(1,w/W);c.width=W*k;c.height=H*k;x.drawImage(i,0,0,c.width,c.height)}res(c.toDataURL('image/jpeg',q))};i.src=URL.createObjectURL(f)});
+const ld=s=>new Promise(r=>{if(!s)return r(null);const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=s});
+
+function render(){
+ const tabs=[['teams','الفرق'],['bracket','القرعة والمباريات'],['posts','الإعلانات']];
+ let h=`<header>${owner?`<input id=tname value="${esc(S.name)}">`:`<h1>${esc(S.name)}</h1>`}<span class=bg>${owner?'وضع الإدارة':'عرض الفرق'} · ${S.teams.length} فريق</span></header>
+ <nav>${tabs.map(([k,v])=>`<button data-act=tab data-t=${k} class="${tab==k?'on':''}">${v}</button>`).join('')}</nav><main>`;
+ if(tab=='teams'){
+  h+=owner?`<div class=bar><span>اضغط على أي فريق لتعديله</span><button class=btn data-act=add>＋ إضافة فريق</button></div>`:'';
+  h+=S.teams.length?`<div class=grid>${S.teams.map(t=>`<div class=tc data-act=team data-id=${t.id}><div class=bn>${t.b?`<img src="${t.b}">`:esc(t.name.trim().slice(0,2))}</div><b>${esc(t.name)}</b>${t.n?'<small>📝 ملاحظات</small>':''}</div>`).join('')}</div>`:'<div class=em>لا توجد فرق بعد</div>';
+ }
+ if(tab=='bracket'){
+  const R=S.rounds;
+  if(!R.length){h+=`<div class=em>لم تُجرَ القرعة بعد</div>${owner&&S.teams.length>1?'<div style="text-align:center"><button class=btn data-act=draw>🎲 إجراء القرعة</button></div>':''}`}
+  else{
+   const f=R[R.length-1][0];if(f.w)h+=`<div class=ch>🏆 بطل التصفيات<br>${esc(tm(f.w)?.name)}</div>`;
+   if(owner)h+=`<div class=bar><span>اضغط على الفريق الفائز لتأهيله</span><span><button class="btn g" data-act=poster>📸 صورة مباريات الدور</button> <button class="btn g" data-act=draw>إعادة القرعة</button></span></div>`;
+   h+=`<div class=rounds>${R.map((rd,r)=>`<div class=rc><h3>${rn(r)}</h3><div class=col>${rd.map((m,i)=>mh(m,r,i)).join('')}</div></div>`).join('')}</div>`;
+  }
+ }
+ if(tab=='posts'){
+  h+=owner?`<div class=bar><span>صور المباريات المنشورة للفرق</span><label class=btn>＋ رفع صورة<input type=file accept="image/*" id=upi hidden></label></div>`:'';
+  h+=S.posts.length?`<div class=grid style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">${S.posts.map(p=>`<div class=ps data-act=post data-id=${p.id}><img src="${p.img}"><div><b>${esc(p.t)}</b><span>${esc(p.d)}</span></div></div>`).join('')}</div>`:'<div class=em>لا توجد إعلانات بعد</div>';
+ }
+ h+='</main>';
+ if(owner)h+=`<div class=sv><span>${dirty?'⚠️ تغييرات غير منشورة':'✓ كل شيء منشور'}</span><button class=btn data-act=pub ${dirty?'':'disabled style="opacity:.5"'}>نشر التغييرات للفرق</button></div>`;
+ $('#app').innerHTML=h;
+ const tn=$('#tname');if(tn)tn.onchange=()=>{S.name=tn.value;ch()};
+ const up=$('#upi');if(up)up.onchange=async()=>{const f=up.files[0];if(!f)return;const t=prompt('عنوان الصورة','مباريات اليوم');S.posts.unshift({id:Date.now(),t:t||'إعلان',d:new Date().toLocaleDateString('ar-EG'),img:await rs(f,1000,0,.8)});S.posts=S.posts.slice(0,12);ch()};
+}
+function mh(m,r,i){
+ const row=k=>{const id=m[k],t=tm(id);if(!id||!t)return '<div class="tr e">—</div>';
+  return `<div class="tr ${m.w===id?'w':m.w?'l':''}" ${owner&&m.a&&m.b?`data-act=win data-r=${r} data-i=${i} data-id=${id}`:''}>${logo(t)}<b>${esc(t.name)}</b>${m.w===id?'✓':''}</div>`};
+ return `<div class=mt>${row('a')}${row('b')}${r==0&&m.a&&!m.b?'<small>تأهل مباشر</small>':''}</div>`;
+}
+function setW(r,i,w){
+ const m=S.rounds[r][i];m.w=w;
+ if(r+1<S.rounds.length){const n=S.rounds[r+1][i>>1];n[i%2?'b':'a']=w;if(n.w&&n.w!==n.a&&n.w!==n.b)setW(r+1,i>>1,null)}
+}
+function draw(){
+ const a=S.teams.map(t=>t.id).sort(()=>Math.random()-.5);let sz=2;while(sz<a.length)sz*=2;
+ const byes=sz-a.length,r0=[];let k=0;
+ for(let i=0;i<sz/2;i++){if(i<byes)r0.push({a:a[k++],b:null,w:null});else{r0.push({a:a[k++],b:a[k++],w:null})}}
+ S.rounds=[r0];for(let n=sz/4;n>=1;n/=2)S.rounds.push(Array.from({length:n},()=>({a:null,b:null,w:null})));
+ r0.forEach((m,i)=>{if(!m.b)setW(0,i,m.a)});
+}
+function modal(h){$('#md').innerHTML=`<div class=ov data-act=close><div class=md onclick="event.stopPropagation()">${h}</div></div>`}
+function teamModal(id){
+ const t=tm(id);tmpB=undefined;
+ if(!owner){modal(`<div class=pv>${t.b?`<img src="${t.b}">`:esc(t.name.slice(0,2))}</div><h2 style="margin-top:12px">${esc(t.name)}</h2>${t.n?`<div class=nt>${esc(t.n)}</div>`:''}<div class=row><button class="btn g" data-act=close>إغلاق</button></div>`);return}
+ modal(`<h2>تعديل الفريق</h2><div class=pv id=pvb>${t.b?`<img src="${t.b}">`:esc(t.name.slice(0,2))}</div>
+ <label>البانر</label><input type=file id=tb accept="image/*">
+ <label>اسم الفريق</label><input type=text id=tn value="${esc(t.name)}">
+ <label>ملاحظات</label><textarea id=tnote>${esc(t.n||'')}</textarea>
+ <div class=row><button class=btn data-act=saveteam data-id=${id}>حفظ</button><button class="btn d" data-act=delteam data-id=${id}>حذف</button><button class="btn g" data-act=close>إلغاء</button></div>`);
+ $('#tb').onchange=async e=>{const f=e.target.files[0];if(f){tmpB=await rs(f,480,240,.8);$('#pvb').innerHTML=`<img src="${tmpB}">`}};
+}
+function rr(x,a,b,c,d,r){x.beginPath();x.roundRect(a,b,c,d,r);x.fill()}
+async function genPoster(r,note){
+ const ms=S.rounds[r].filter(m=>m.a&&m.b),W=1080,RH=240,H=300+ms.length*RH+60;
+ const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+ const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#14803f');g.addColorStop(1,'#08170e');x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.textAlign='center';x.direction='rtl';x.fillStyle='#fff';x.font='bold 56px '+FT;x.fillText(S.name,W/2,100);
+ x.fillStyle='#fde68a';x.font='bold 42px '+FT;x.fillText(rn(r),W/2,170);
+ if(note){x.fillStyle='#e5efe8';x.font='32px '+FT;x.fillText(note,W/2,225)}
+ for(let i=0;i<ms.length;i++){
+  const y=270+i*RH;x.fillStyle='rgba(255,255,255,.1)';rr(x,40,y,W-80,RH-24,24);
+  for(const [k,cx] of [['a',W-215],['b',215]]){
+   const t=tm(ms[i][k]),im=await ld(t.b),w=260,h=130,yy=y+18;
+   x.save();x.beginPath();x.roundRect(cx-w/2,yy,w,h,18);x.clip();
+   if(im){const q=Math.max(w/im.width,h/im.height);x.drawImage(im,cx-w/2+(w-im.width*q)/2,yy+(h-im.height*q)/2,im.width*q,im.height*q)}
+   else{x.fillStyle='#1f9d55';x.fillRect(cx-w/2,yy,w,h);x.fillStyle='#fff';x.font='bold 60px '+FT;x.fillText(t.name.trim().slice(0,2),cx,yy+85)}
+   x.restore();x.fillStyle='#fff';let f=34;x.font=`bold ${f}px ${FT}`;
+   while(x.measureText(t.name).width>380&&f>16){f-=2;x.font=`bold ${f}px ${FT}`}
+   x.fillText(t.name,cx,yy+h+46);
+  }
+  x.fillStyle='#fbbf24';x.font='bold 60px '+FT;x.fillText('VS',W/2,y+105);
+ }
+ x.fillStyle='#ffffff99';x.font='24px '+FT;x.fillText('نظام إدارة التصفيات',W/2,H-24);
+ return c;
+}
+async function posterUpd(){
+ PC=await genPoster(PR,($('#pn')||{}).value||'');const i=$('#pimg');if(i)i.src=PC.toDataURL('image/jpeg',.82);
+}
+function posterModal(){
+ PR=S.rounds.findIndex(rd=>rd.some(m=>m.a&&m.b&&!m.w));if(PR<0)PR=S.rounds.length-1;
+ if(!S.rounds[PR].some(m=>m.a&&m.b)){toast('لا توجد مباريات جاهزة في هذا الدور');return}
+ modal(`<h2>صورة مباريات ${rn(PR)}</h2><img class=big id=pimg alt="جاري التجهيز..."><label>نص إضافي (الموعد/الملعب)</label><input type=text id=pn placeholder="مثال: الجمعة 8 مساءً - ملعب النادي">
+ <div class=row><button class="btn g" data-act=pr>تحديث</button><button class=btn data-act=pubpost>نشر للفرق</button><button class="btn g" data-act=dlp>تحميل</button></div>`);
+ posterUpd();
+}
+document.addEventListener('click',async e=>{
+ const el=e.target.closest('[data-act]');if(!el)return;const a=el.dataset.act,id=+el.dataset.id;
+ if(a=='tab'){tab=el.dataset.t;render()}
+ else if(a=='close'){if(e.target===el||el.tagName=='BUTTON')$('#md').innerHTML=''}
+ else if(a=='team')teamModal(id);
+ else if(a=='add'){const t={id:S.nid++,name:'فريق جديد',b:'',n:''};S.teams.push(t);ch();teamModal(t.id)}
+ else if(a=='saveteam'){const t=tm(id);t.name=$('#tn').value.trim()||t.name;t.n=$('#tnote').value;if(tmpB!==undefined)t.b=tmpB;$('#md').innerHTML='';ch()}
+ else if(a=='delteam'){if(!confirm('حذف الفريق؟'+(S.rounds.length?' سيتم إلغاء القرعة.':'')))return;S.teams=S.teams.filter(t=>t.id!==id);S.rounds=[];$('#md').innerHTML='';ch()}
+ else if(a=='draw'){if(S.rounds.length&&!confirm('سيتم مسح النتائج الحالية وإعادة القرعة. متابعة؟'))return;draw();ch()}
+ else if(a=='win'){const m=S.rounds[+el.dataset.r][+el.dataset.i];setW(+el.dataset.r,+el.dataset.i,m.w===id?null:id);ch()}
+ else if(a=='poster')posterModal();
+ else if(a=='pr')posterUpd();
+ else if(a=='pubpost'){await posterUpd();S.posts.unshift({id:Date.now(),t:'مباريات '+rn(PR),d:new Date().toLocaleDateString('ar-EG'),img:PC.toDataURL('image/jpeg',.82)});S.posts=S.posts.slice(0,12);$('#md').innerHTML='';tab='posts';ch();toast('أُضيفت للإعلانات — اضغط "نشر" لتصل للفرق')}
+ else if(a=='dlp'){if(!dl){toast('التحميل غير متاح هنا');return}try{await posterUpd();const b=await new Promise(r=>PC.toBlob(r,'image/jpeg',.9));await dl.save({filename:'matches.jpg',data:b})}catch(x){}}
+ else if(a=='post'){const p=S.posts.find(p=>p.id===id);modal(`<h2>${esc(p.t)}</h2><img class=big src="${p.img}"><div class=row>${owner?`<button class="btn d" data-act=delpost data-id=${id}>حذف</button>`:''}<button class="btn g" data-act=close>إغلاق</button></div>`)}
+ else if(a=='delpost'){S.posts=S.posts.filter(p=>p.id!==id);$('#md').innerHTML='';ch()}
+ else if(a=='pub'){
+  if(!art)return;const c=document.documentElement.cloneNode(true);c.querySelector('#app').innerHTML='';c.querySelector('#md').innerHTML='';
+  c.querySelector('#st').textContent=JSON.stringify(S).replace(/</g,'\\u003c');
+  try{await art.publish('<!doctype html>'+c.outerHTML)}catch(x){toast(x.code=='conflict'?'نُشرت نسخة أحدث، سيُعاد التحميل':'تعذر النشر: '+(x.message||x.code))}
+ }
+});
+render();
+(async()=>{try{if(!window.claude)return;const u=await claude.use('user');art=await claude.use('artifact');dl=await claude.use('downloads');owner=!!(u&&u.isOwner()&&art);render()}catch(e){}})();
+</script>
+</body>
+</html>
